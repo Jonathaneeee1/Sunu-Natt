@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sama Natt — Maquette de l'application</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --indigo:#33317D;      /* indigo Ndar */
+  --indigo-deep:#232158;
+  --or:#F2A93B;          /* or de teranga */
+  --or-soft:#FBE8C8;
+  --sable:#FAF6EF;
+  --encre:#1E1B3A;
+  --vert:#1F9D63;
+  --vert-soft:#E2F4EB;
+  --rouge:#D4574E;
+  --rouge-soft:#FBE9E7;
+  --gris:#8B88A6;
+  --ligne:#ECE7DC;
+  --blanc:#FFFFFF;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:'Inter',sans-serif;color:var(--encre);
+  background:var(--indigo-deep);
+  background-image:radial-gradient(circle at 8px 8px, rgba(242,169,59,.10) 2.5px, transparent 2.5px);
+  background-size:44px 44px;
+  display:flex;align-items:center;justify-content:center;gap:56px;
+  padding:32px;min-height:100vh;
+}
+/* ---------- Panneau de présentation ---------- */
+.panel{max-width:400px;color:#EFEDFF}
+.panel .badge{display:inline-block;background:rgba(242,169,59,.15);border:1px solid rgba(242,169,59,.5);
+  color:var(--or);font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  padding:6px 12px;border-radius:999px;margin-bottom:20px}
+.panel h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:44px;line-height:1.05;margin-bottom:6px}
+.panel h1 .nt{color:var(--or)}
+.panel .slogan{font-size:15px;color:#B9B6E0;margin-bottom:28px}
+.panel .desc{font-size:14px;line-height:1.65;color:#D5D3F0;margin-bottom:28px}
+.steps{list-style:none;display:flex;flex-direction:column;gap:10px}
+.steps button{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);color:#EFEDFF;
+  padding:11px 14px;border-radius:12px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:500;
+  cursor:pointer;transition:all .18s ease;
+}
+.steps button:hover{background:rgba(255,255,255,.11)}
+.steps button.active{background:var(--or);border-color:var(--or);color:var(--indigo-deep);font-weight:700}
+.steps .num{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:12px;
+  width:22px;height:22px;border-radius:50%;border:1.5px solid currentColor;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.panel .note{margin-top:26px;font-size:12px;color:#8A87B5;line-height:1.6}
+/* ---------- Téléphone ---------- */
+.phone{
+  width:375px;height:780px;background:#0E0D22;border-radius:48px;padding:12px;
+  box-shadow:0 40px 90px rgba(0,0,0,.55), inset 0 0 0 2px rgba(255,255,255,.06);
+  flex-shrink:0;position:relative;
+}
+.phone-screen{
+  width:100%;height:100%;background:var(--sable);border-radius:38px;overflow:hidden;
+  position:relative;display:flex;flex-direction:column;
+}
+.notch{position:absolute;top:12px;left:50%;transform:translateX(-50%);
+  width:110px;height:26px;background:#0E0D22;border-radius:999px;z-index:60}
+/* barre de statut */
+.statusbar{height:44px;flex-shrink:0;display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 26px 4px;font-size:12px;font-weight:600;color:var(--encre)}
+/* zone écrans */
+.screens{flex:1;position:relative;overflow:hidden}
+.screen{position:absolute;inset:0;overflow-y:auto;padding:14px 18px 90px;
+  opacity:0;pointer-events:none;transform:translateX(14px);transition:opacity .25s ease,transform .25s ease}
+.screen.on{opacity:1;pointer-events:auto;transform:none}
+.screen::-webkit-scrollbar{display:none}
+/* barre de navigation */
+.tabbar{position:absolute;bottom:0;left:0;right:0;height:74px;background:var(--blanc);
+  border-top:1px solid var(--ligne);display:flex;z-index:50;border-radius:0 0 38px 38px}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  font-size:10px;font-weight:600;color:var(--gris);cursor:pointer;background:none;border:none;font-family:'Inter',sans-serif}
+.tab svg{width:22px;height:22px;stroke:currentColor}
+.tab.active{color:var(--indigo)}
+.tab .fab{width:48px;height:48px;border-radius:50%;background:var(--or);display:flex;align-items:center;justify-content:center;
+  margin-top:-26px;box-shadow:0 8px 18px rgba(242,169,59,.45)}
+.tab .fab svg{stroke:var(--indigo-deep);width:24px;height:24px}
+/* ---------- composants in-app ---------- */
+.wax{background:var(--indigo);border-radius:20px;color:#fff;position:relative;overflow:hidden}
+.wax::before{content:"";position:absolute;inset:0;
+  background-image:radial-gradient(circle at 6px 6px, rgba(242,169,59,.22) 2px, transparent 2px);
+  background-size:26px 26px;opacity:.7}
+.wax>*{position:relative}
+.greet{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:21px;margin-bottom:2px}
+.greet-sub{font-size:12.5px;color:var(--gris)}
+h2.sec{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:700;margin:20px 0 10px}
+.card{background:var(--blanc);border:1px solid var(--ligne);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.row{display:flex;align-items:center;justify-content:space-between}
+.pill{font-size:10.5px;font-weight:700;padding:4px 9px;border-radius:999px}
+.pill.ok{background:var(--vert-soft);color:var(--vert)}
+.pill.warn{background:var(--or-soft);color:#B47714}
+.pill.late{background:var(--rouge-soft);color:var(--rouge)}
+.btn{display:block;width:100%;border:none;border-radius:14px;padding:15px;font-family:'Inter',sans-serif;
+  font-size:14.5px;font-weight:700;cursor:pointer;text-align:center;transition:transform .12s ease}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--indigo);color:#fff}
+.btn.gold{background:var(--or);color:var(--indigo-deep)}
+.btn.ghost{background:none;border:1.5px solid var(--ligne);color:var(--encre)}
+.avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-weight:700;font-size:13px;color:#fff;flex-shrink:0}
+.progress{height:7px;background:var(--ligne);border-radius:99px;overflow:hidden}
+.progress>div{height:100%;background:var(--or);border-radius:99px}
+.back{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--gris);
+  font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;padding:4px 0;margin-bottom:8px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--gris);margin-bottom:6px}
+.field .input{background:var(--blanc);border:1.5px solid var(--ligne);border-radius:12px;padding:13px 14px;
+  font-size:14px;font-weight:600;color:var(--encre)}
+.seg{display:flex;background:var(--blanc);border:1.5px solid var(--ligne);border-radius:12px;padding:4px;gap:4px}
+.seg button{flex:1;border:none;background:none;padding:10px 4px;border-radius:9px;font-family:'Inter',sans-serif;
+  font-size:12.5px;font-weight:600;color:var(--gris);cursor:pointer}
+.seg button.sel{background:var(--indigo);color:#fff}
+/* choix opérateur */
+.payop{display:flex;align-items:center;gap:12px;background:var(--blanc);border:2px solid var(--ligne);
+  border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;transition:border-color .15s}
+.payop.sel{border-color:var(--indigo)}
+.oplogo{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:11px;color:#fff;font-family:'Bricolage Grotesque',sans-serif}
+.radio{margin-left:auto;width:20px;height:20px;border-radius:50%;border:2px solid var(--ligne);position:relative}
+.payop.sel .radio{border-color:var(--indigo)}
+.payop.sel .radio::after{content:"";position:absolute;inset:3px;border-radius:50%;background:var(--indigo)}
+/* overlay succès */
+.overlay{position:absolute;inset:0;background:rgba(14,13,34,.55);z-index:80;display:none;
+  align-items:flex-end;border-radius:38px}
+.overlay.show{display:flex}
+.sheet{background:var(--sable);width:100%;border-radius:26px 26px 38px 38px;padding:28px 22px 30px;text-align:center;
+  animation:up .3s ease}
+@keyframes up{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+.check{width:74px;height:74px;border-radius:50%;background:var(--vert);margin:0 auto 16px;
+  display:flex;align-items:center;justify-content:center;animation:pop .4s ease}
+@keyframes pop{0%{transform:scale(.4)}70%{transform:scale(1.12)}100%{transform:scale(1)}}
+/* score ring */
+.ring{width:150px;height:150px;margin:6px auto 10px;position:relative}
+.ring svg{transform:rotate(-90deg)}
+.ring .val{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .val b{font-family:'Bricolage Grotesque',sans-serif;font-size:34px;font-weight:800;color:var(--indigo)}
+.ring .val span{font-size:11px;color:var(--gris);font-weight:600}
+.demo-tag{position:absolute;top:20px;right:-13px;background:var(--rouge);color:#fff;font-size:10px;font-weight:700;
+  letter-spacing:.08em;padding:5px 12px;border-radius:6px;transform:rotate(6deg);z-index:70;text-transform:uppercase}
+@media(max-width:900px){
+  body{flex-direction:column;gap:28px;padding:20px}
+  .panel{max-width:375px}
+  .panel h1{font-size:32px}
+}
+</style>
+</head>
+<body>
+
+<!-- ======== PANNEAU DE PRÉSENTATION ======== -->
+<div class="panel">
+  <span class="badge">Maquette interactive · Prototype</span>
+  <h1>Sama <span class="nt">Natt</span></h1>
+  <p class="slogan">« Ma tontine » — l'épargne collective, en toute confiance.</p>
+  <p class="desc">Voici à quoi ressemblera l'application. Cliquez sur les boutons du téléphone pour naviguer comme une vraie utilisatrice&nbsp;: consulter sa tontine, payer sa cotisation via Wave ou Orange Money, et suivre son score de fiabilité.</p>
+  <ul class="steps">
+    <li><button class="active" data-go="home"><span class="num">1</span>Accueil — mes tontines</button></li>
+    <li><button data-go="detail"><span class="num">2</span>Détail d'une tontine</button></li>
+    <li><button data-go="pay"><span class="num">3</span>Payer sa cotisation</button></li>
+    <li><button data-go="create"><span class="num">4</span>Créer une tontine</button></li>
+    <li><button data-go="profile"><span class="num">5</span>Score de fiabilité</button></li>
+  </ul>
+  <p class="note">Prototype de démonstration — aucune transaction réelle. Données fictives conformes au plan d'affaires (tontine de 12 membres, cotisation 5 000 FCFA, pot 60 000 FCFA).</p>
+</div>
+
+<!-- ======== TÉLÉPHONE ======== -->
+<div class="phone">
+  <div class="demo-tag">Démo</div>
+  <div class="phone-screen">
+    <div class="notch"></div>
+    <div class="statusbar"><span>9:41</span><span>▮▮▮ ⌁ 🔋</span></div>
+
+    <div class="screens">
+
+      <!-- ===== ÉCRAN 1 : ACCUEIL ===== -->
+      <section class="screen on" id="s-home">
+        <p class="greet">Salam, Awa 👋🏾</p>
+        <p class="greet-sub">Mangi fi rekk — vos tontines vous attendent.</p>
+
+        <div class="wax" style="margin-top:14px;padding:18px">
+          <p style="font-size:11.5px;font-weight:600;color:#C9C6F2;letter-spacing:.06em;text-transform:uppercase">Épargne totale en cours</p>
+          <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:30px;font-weight:800;margin:4px 0 10px">85 000 <span style="font-size:15px;font-weight:600">FCFA</span></p>
+          <div class="row" style="gap:8px">
+            <span class="pill" style="background:rgba(242,169,59,.2);color:var(--or)">2 tontines actives</span>
+            <span class="pill" style="background:rgba(255,255,255,.14);color:#fff">Prochain pot : 12 juil.</span>
+          </div>
+        </div>
+
+        <h2 class="sec">Mes tontines</h2>
+
+        <div class="card" style="cursor:pointer" onclick="go('detail')">
+          <div class="row">
+            <div style="display:flex;gap:11px;align-items:center">
+              <div class="avatar" style="background:var(--indigo)">MH</div>
+              <div>
+                <p style="font-weight:700;font-size:14px">Natt du marché HLM</p>
+                <p style="font-size:11.5px;color:var(--gris)">12 membres · 5 000 FCFA / mois</p>
+              </div>
+            </div>
+            <span class="pill warn">À payer</span>
+          </div>
+          <div style="margin-top:12px">
+            <div class="row" style="font-size:11px;color:var(--gris);margin-bottom:5px">
+              <span>Tour 7 sur 12</span><span>Pot : 60 000 FCFA</span>
+            </div>
+            <div class="progress"><div style="width:58%"></div></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="row">
+            <div style="display:flex;gap:11px;align-items:center">
+              <div class="avatar" style="background:var(--vert)">CO</div>
+              <div>
+                <p style="font-weight:700;font-size:14px">Tontine des collègues</p>
+                <p style="font-size:11.5px;color:var(--gris)">8 membres · 10 000 FCFA / mois</p>
+              </div>
+            </div>
+            <span class="pill ok">Payée ✓</span>
+          </div>
+          <div style="margin-top:12px">
+            <div class="row" style="font-size:11px;color:var(--gris);margin-bottom:5px">
+              <span>Tour 3 sur 8</span><span>Pot : 80 000 FCFA</span>
+            </div>
+            <div class="progress"><div style="width:37%;background:var(--vert)"></div></div>
+          </div>
+        </div>
+
+        <h2 class="sec">Rappels</h2>
+        <div class="card" style="display:flex;gap:12px;align-items:center;background:var(--or-soft);border-color:#F0D9AE">
+          <span style="font-size:22px">⏰</span>
+          <p style="font-size:12.5px;line-height:1.5"><b>Cotisation du Natt du marché HLM</b> — plus que <b>3 jours</b> (échéance le 10 juillet).</p>
+        </div>
+      </section>
+
+      <!-- ===== ÉCRAN 2 : DÉTAIL TONTINE ===== -->
+      <section class="screen" id="s-detail">
+        <button class="back" onclick="go('home')">← Retour</button>
+        <div class="wax" style="padding:18px">
+          <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:19px;font-weight:700">Natt du marché HLM</p>
+          <p style="font-size:12px;color:#C9C6F2;margin:2px 0 12px">Tour 7 sur 12 · échéance le 10 juillet</p>
+          <div class="row">
+            <div>
+              <p style="font-size:10.5px;color:#C9C6F2;text-transform:uppercase;letter-spacing:.05em">Pot de ce tour</p>
+              <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:24px;font-weight:800">60 000 FCFA</p>
+            </div>
+            <div style="text-align:right">
+              <p style="font-size:10.5px;color:#C9C6F2;text-transform:uppercase;letter-spacing:.05em">Bénéficiaire</p>
+              <p style="font-weight:700;font-size:14px">🎉 Bigué Diop</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn gold" style="margin:14px 0 4px" onclick="go('pay')">Payer ma cotisation · 5 000 FCFA</button>
+
+        <h2 class="sec">Cotisations du tour <span style="color:var(--gris);font-weight:500;font-size:12px">9 / 12 payées</span></h2>
+
+        <div class="card" style="padding:8px 16px">
+          <div class="mrow" style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--ligne)">
+            <div class="avatar" style="background:#7C6BD6">AN</div>
+            <div style="flex:1"><p style="font-weight:600;font-size:13.5px">Awa Ndiaye <span style="color:var(--gris);font-weight:500">(vous)</span></p>
+            <p style="font-size:11px;color:var(--gris)">Organisatrice</p></div>
+            <span class="pill warn">En attente</span>
+          </div>
+          <div class="mrow" style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--ligne)">
+            <div class="avatar" style="background:var(--vert)">BD</div>
+            <div style="flex:1"><p style="font-weight:600;font-size:13.5px">Bigué Diop</p>
+            <p style="font-size:11px;color:var(--gris)">Payé le 2 juil. · Wave</p></div>
+            <span class="pill ok">Payée ✓</span>
+          </div>
+          <div class="mrow" style="display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--ligne)">
+            <div class="avatar" style="background:#D67B4E">YF</div>
+            <div style="flex:1"><p style="font-weight:600;font-size:13.5px">Yande Fall Diop</p>
+            <p style="font-size:11px;color:var(--gris)">Payé le 3 juil. · Orange Money</p></div>
+            <span class="pill ok">Payée ✓</span>
+          </div>
+          <div class="mrow" style="display:flex;align-items:center;gap:11px;padding:9px 0">
+            <div class="avatar" style="background:var(--rouge)">JN</div>
+            <div style="flex:1"><p style="font-weight:600;font-size:13.5px">Jonathan Ndiaye</p>
+            <p style="font-size:11px;color:var(--gris)">Relancé automatiquement hier</p></div>
+            <span class="pill late">En retard</span>
+          </div>
+          <p style="text-align:center;font-size:11.5px;color:var(--gris);padding:9px 0 6px;font-weight:600">Voir les 12 membres ›</p>
+        </div>
+
+        <h2 class="sec">Historique</h2>
+        <div class="card" style="font-size:12.5px;line-height:2">
+          <div class="row"><span>✅ Tour 6 — pot remis à Yande F.</span><span style="color:var(--gris)">10 juin</span></div>
+          <div class="row"><span>✅ Tour 5 — pot remis à Awa N.</span><span style="color:var(--gris)">10 mai</span></div>
+          <div class="row"><span>✅ Tour 4 — pot remis à Jonathan N.</span><span style="color:var(--gris)">10 avr.</span></div>
+        </div>
+      </section>
+
+      <!-- ===== ÉCRAN 3 : PAIEMENT ===== -->
+      <section class="screen" id="s-pay">
+        <button class="back" onclick="go('detail')">← Retour</button>
+        <h2 class="sec" style="margin-top:4px;font-size:19px">Payer ma cotisation</h2>
+        <div class="card" style="text-align:center;padding:20px">
+          <p style="font-size:12px;color:var(--gris);font-weight:600">Natt du marché HLM · Tour 7</p>
+          <p style="font-family:'Bricolage Grotesque',sans-serif;font-size:36px;font-weight:800;color:var(--indigo);margin:6px 0 2px">5 000 <span style="font-size:16px">FCFA</span></p>
+          <p style="font-size:11.5px;color:var(--gris)">+ frais de service Sama Natt inclus dans le pot (1,5 %)</p>
+        </div>
+
+        <h2 class="sec">Choisir le moyen de paiement</h2>
+        <div class="payop sel" id="op-wave" onclick="pick('wave')">
+          <div class="oplogo" style="background:#1DC3F2">WAVE</div>
+          <div><p style="font-weight:700;font-size:14px">Wave</p><p style="font-size:11.5px;color:var(--gris)">77 •• •• 21</p></div>
+          <div class="radio"></div>
+        </div>
+        <div class="payop" id="op-om" onclick="pick('om')">
+          <div class="oplogo" style="background:#FF6600">OM</div>
+          <div><p style="font-weight:700;font-size:14px">Orange Money</p><p style="font-size:11.5px;color:var(--gris)">78 •• •• 45</p></div>
+          <div class="radio"></div>
+        </div>
+
+        <div class="card" style="background:var(--vert-soft);border-color:#CBE8D8;display:flex;gap:10px;align-items:flex-start">
+          <span style="font-size:17px">🔒</span>
+          <p style="font-size:11.5px;line-height:1.55;color:#14724A">Votre argent transite directement par votre opérateur. Sama Natt trace le paiement et génère votre reçu — sans jamais détenir vos fonds.</p>
+        </div>
+
+        <button class="btn primary" style="margin-top:8px" onclick="paySuccess()">Confirmer le paiement</button>
+      </section>
+
+      <!-- ===== ÉCRAN 4 : CRÉER ===== -->
+      <section class="screen" id="s-create">
+        <h2 class="sec" style="margin-top:6px;font-size:19px">Créer une tontine</h2>
+        <p style="font-size:12.5px;color:var(--gris);margin-bottom:16px">3 minutes suffisent. Vos membres reçoivent une invitation par SMS ou WhatsApp.</p>
+
+        <div class="field"><label>Nom de la tontine</label>
+          <div class="input">Natt des vendeuses de Sandaga</div></div>
+
+        <div class="field"><label>Cotisation par membre</label>
+          <div class="input row"><span>5 000 FCFA</span><span style="color:var(--gris);font-size:12px">par tour</span></div></div>
+
+        <div class="field"><label>Fréquence</label>
+          <div class="seg">
+            <button>Chaque semaine</button>
+            <button class="sel">Chaque mois</button>
+            <button>Quinzaine</button>
+          </div></div>
+
+        <div class="field"><label>Membres (10)</label>
+          <div class="input" style="display:flex;gap:6px;flex-wrap:wrap;padding:10px">
+            <span class="pill" style="background:var(--indigo);color:#fff">Fatou S. ✓</span>
+            <span class="pill" style="background:var(--indigo);color:#fff">Mariama K. ✓</span>
+            <span class="pill" style="background:var(--indigo);color:#fff">Adja D. ✓</span>
+            <span class="pill" style="background:var(--or-soft);color:#B47714">+ 7 autres</span>
+            <span class="pill" style="background:none;border:1.5px dashed var(--gris);color:var(--gris)">+ Ajouter</span>
+          </div></div>
+
+        <div class="field"><label>Ordre de réception du pot</label>
+          <div class="seg">
+            <button class="sel">Tirage au sort</button>
+            <button>Ordre choisi</button>
+          </div></div>
+
+        <button class="btn gold" onclick="toast()">Lancer la tontine 🎉</button>
+        <p style="text-align:center;font-size:11px;color:var(--gris);margin-top:10px">La tontine démarre quand tous les membres ont accepté.</p>
+      </section>
+
+      <!-- ===== ÉCRAN 5 : PROFIL / SCORE ===== -->
+      <section class="screen" id="s-profile">
+        <div style="text-align:center;margin-top:6px">
+          <div class="avatar" style="background:#7C6BD6;width:64px;height:64px;font-size:22px;margin:0 auto 8px">AN</div>
+          <p style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:19px">Awa Ndiaye</p>
+          <p style="font-size:12px;color:var(--gris)">Membre depuis janvier 2027 · Dakar</p>
+        </div>
+
+        <div class="ring">
+          <svg width="150" height="150" viewBox="0 0 150 150">
+            <circle cx="75" cy="75" r="64" fill="none" stroke="var(--ligne)" stroke-width="12"/>
+            <circle cx="75" cy="75" r="64" fill="none" stroke="var(--vert)" stroke-width="12"
+              stroke-linecap="round" stroke-dasharray="402" stroke-dashoffset="32"/>
+          </svg>
+          <div class="val"><b>92</b><span>SCORE DE FIABILITÉ</span></div>
+        </div>
+        <p style="text-align:center;font-size:12px;color:var(--gris);max-width:270px;margin:0 auto 16px;line-height:1.55">
+          Calculé sur votre régularité de paiement. Un bon score ouvre l'accès au <b style="color:var(--encre)">micro-crédit</b> chez nos partenaires.</p>
+
+        <div class="card">
+          <div class="row" style="margin-bottom:10px"><span style="font-size:12.5px;font-weight:600">Paiements à l'heure</span><b style="font-size:13px;color:var(--vert)">34 / 36</b></div>
+          <div class="row" style="margin-bottom:10px"><span style="font-size:12.5px;font-weight:600">Tontines terminées sans défaut</span><b style="font-size:13px;color:var(--vert)">3</b></div>
+          <div class="row"><span style="font-size:12.5px;font-weight:600">Ancienneté</span><b style="font-size:13px">6 mois</b></div>
+        </div>
+
+        <div class="card" style="background:var(--indigo);border:none;color:#fff;display:flex;gap:12px;align-items:center">
+          <span style="font-size:24px">🏅</span>
+          <div>
+            <p style="font-weight:700;font-size:13.5px">Badge « Jëkk » débloqué</p>
+            <p style="font-size:11.5px;color:#C9C6F2">Fiabilité exemplaire — éligible à une avance sur cotisation.</p>
+          </div>
+        </div>
+
+        <button class="btn ghost">Télécharger mon historique (PDF)</button>
+      </section>
+    </div>
+
+    <!-- ===== OVERLAY SUCCÈS ===== -->
+    <div class="overlay" id="ov">
+      <div class="sheet">
+        <div class="check"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <p style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:20px;margin-bottom:4px">Cotisation payée !</p>
+        <p style="font-size:13px;color:var(--gris);margin-bottom:4px">5 000 FCFA · Natt du marché HLM · Tour 7</p>
+        <p style="font-size:12px;color:var(--gris);margin-bottom:18px">Reçu n° SN-2027-0847 envoyé par SMS 📩</p>
+        <button class="btn primary" onclick="closeOv()">Retour à ma tontine</button>
+      </div>
+    </div>
+
+    <!-- ===== TABBAR ===== -->
+    <nav class="tabbar">
+      <button class="tab active" data-tab="home" onclick="go('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        Accueil</button>
+      <button class="tab" data-tab="detail" onclick="go('detail')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Tontines</button>
+      <button class="tab" data-tab="create" onclick="go('create')">
+        <span class="fab"><svg viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+      </button>
+      <button class="tab" data-tab="pay" onclick="go('pay')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+        Payer</button>
+      <button class="tab" data-tab="profile" onclick="go('profile')">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Profil</button>
+    </nav>
+  </div>
+</div>
+
+<script>
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById('s-'+id).classList.add('on');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
+  document.querySelectorAll('.steps button').forEach(b=>b.classList.toggle('active',b.dataset.go===id));
+  document.getElementById('ov').classList.remove('show');
+}
+document.querySelectorAll('.steps button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.go)));
+function pick(op){
+  document.getElementById('op-wave').classList.toggle('sel',op==='wave');
+  document.getElementById('op-om').classList.toggle('sel',op==='om');
+}
+function paySuccess(){document.getElementById('ov').classList.add('show')}
+function closeOv(){document.getElementById('ov').classList.remove('show');go('detail')}
+function toast(){alert("✅ Invitations envoyées !\n\nLa tontine « Natt des vendeuses de Sandaga » démarrera dès que les 10 membres auront accepté.\n\n(Démonstration — aucune action réelle)")}
+</script>
+</body>
+</html>
